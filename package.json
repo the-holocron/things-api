@@ -1,0 +1,88 @@
+{
+  "name": "@theholocron/stormtrooper",
+  "description": "stormtrooper are 100% clones for building out libraries within the Galaxy.",
+  "homepage": "https://github.com/the-holocron/stormtrooper#readme",
+  "author": "Newton Koumantzelis",
+  "version": "0.1.0",
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "repository": "https://github.com/the-holocron/stormtrooper.git",
+  "bugs": "https://github.com/the-holocron/stormtrooper/issues",
+  "releases": "https://github.com/the-holocron/stormtrooper/releases",
+  "wiki": "https://github.com/the-holocron/stormtrooper/wiki",
+  "license": "GPL-3.0",
+  "alex": {
+    "allow": [
+      "color",
+      "colors",
+      "dead",
+      "disabled",
+      "invalid"
+    ]
+  },
+  "babel": {
+    "presets": [
+      "@theholocron"
+    ]
+  },
+  "browserslist": [
+    "extends @theholocron/browserslist-config"
+  ],
+  "commitlint": {
+    "extends": [
+      "@theholocron"
+    ]
+  },
+  "eslintConfig": {
+    "extends": "@theholocron"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-commit": "lint-staged --config @theholocron/lint-staged-config"
+    }
+  },
+  "jest": {
+    "preset": "@theholocron/jest-preset"
+  },
+  "release": {
+    "extends": "@theholocron/semantic-release-config",
+    "branch": "master"
+  },
+  "stylelint": {
+    "extends": "@theholocron"
+  },
+  "scripts": {
+    "commit": "commit",
+    "dist:css": "sass src/index.scss dist/stormtrooper.css --load-path=node_modules --load-path=node_modules/@theholocron --output=compressed --source-map",
+    "postdist:css": "postcss dist/styles/*.css --config ./node_modules/@theholocron/postcss-config --replace",
+    "dist:js": "babel src -d dist/scripts --source-maps",
+    "dist": "npm run dist:js && npm run dist:css",
+    "docs": "build-storybook  -o docs",
+    "lint:css": "stylelint src/**/*.scss",
+    "lint:docs": "markdownlint --config ./node_modules/@theholocron/markdownlint-config/markdownlintrc.json --ignore node_modules --ignore .github --ignore CHANGELOG.md **/*.md",
+    "lint:js": "eslint . --ignore-path .gitignore",
+    "lint": "npm run lint:css && npm run lint:js",
+    "start": "start-storybook",
+    "test:docs": "alex .",
+    "test:js": "jest",
+    "test": "npm run test:docs && npm run test:js"
+  },
+  "devDependencies": {
+    "@theholocron/babel-preset": "latest",
+    "@theholocron/browserslist-config": "latest",
+    "@theholocron/commitlint-config": "latest",
+    "@theholocron/eslint-config": "latest",
+    "@theholocron/jest-preset": "latest",
+    "@theholocron/lint-staged-config": "latest",
+    "@theholocron/markdownlint-config": "latest",
+    "@theholocron/postcss-config": "latest",
+    "@theholocron/semantic-release-config": "latest",
+    "@theholocron/storybook-config": "latest",
+    "@theholocron/stylelint-config": "latest",
+    "@theholocron/webpack-config": "latest",
+    "alex": "^8.1.1"
+  }
+}

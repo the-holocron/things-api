@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - '**'
+      - '!master'
+  pull_requests:
+    branches:
+      - '**'
+      - '!master'
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    if: "! contains(github.event.head_commit.message, '[skip ci]')"
+    steps:
+      - run: echo "${{ github.event.head_commit.message }}"
+
+  test:
+    needs: prepare
+    name: Test on node ${{ matrix.node }} and ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        node:
+          - 12
+          - 13
+        os:
+          - ubuntu-latest
+          - windows-latest
+          - macOS-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v1
+      - name: setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node }}
+      - name: Install dependencies
+        env:
+          CI: true
+        run: npm ci
+      - name: Lint documentation
+        run: npm run lint:docs
+      - name: Lint Javascript
+        run: npm run lint:js
+      - name: Lint styles
+        run: npm run lint:css
+      - name: Test documentation
+        run: npm run test:docs
+      - name: Test code
+        run: npm run test:js
